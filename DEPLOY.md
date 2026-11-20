@@ -13,18 +13,21 @@
 2. The workflow in `.github/workflows/deploy.yml` builds and deploys the site on every push to `main`. You can watch it in the **Actions** tab.
 3. On the same Pages screen, set **Custom domain** to `rjlopez.me` and save. The `public/CNAME` file keeps this setting across deploys.
 
-## 3. Point the GoDaddy DNS records at GitHub
-In GoDaddy, open **My Products → rjlopez.me → DNS**:
+## 3. Point the DNS records at GitHub (in Cloudflare)
+The domain is registered at GoDaddy, but its nameservers point to **Cloudflare**, so the DNS records are managed in Cloudflare. In the Cloudflare dashboard, open **rjlopez.me → DNS → Records** and add these records:
 
-| Type  | Name | Value                   |
-|-------|------|-------------------------|
-| A     | @    | 185.199.108.153         |
-| A     | @    | 185.199.109.153         |
-| A     | @    | 185.199.110.153         |
-| A     | @    | 185.199.111.153         |
-| CNAME | www  | rjimpervious.github.io  |
+| Type  | Name | Content                 | Proxy status       |
+|-------|------|-------------------------|--------------------|
+| A     | @    | 185.199.108.153         | **DNS only** (grey cloud) |
+| A     | @    | 185.199.109.153         | **DNS only**       |
+| A     | @    | 185.199.110.153         | **DNS only**       |
+| A     | @    | 185.199.111.153         | **DNS only**       |
+| CNAME | www  | rjimpervious.github.io  | **DNS only**       |
 
-Delete any existing `A` record for `@` that points elsewhere, such as GoDaddy's "Parked" record. Also delete any existing `www` CNAME.
+- Set the proxy status to **DNS only**, not Proxied (orange cloud). GitHub has to see its own IP addresses both to verify the domain and to issue the HTTPS certificate.
+- Delete any other `A`, `AAAA` or `CNAME` record for `@` or `www` that points somewhere else.
+- **Don't touch** the `MX` and `TXT` records, which handle email such as `contact@rjlopez.me`.
+- Optional, for IPv6: add `AAAA` records for `@` pointing to `2606:50c0:8000::153`, `2606:50c0:8001::153`, `2606:50c0:8002::153` and `2606:50c0:8003::153`, also set to DNS only.
 
 ## 4. Turn on HTTPS
 DNS changes usually take minutes, but can take up to 24 hours. Once the Pages settings show the DNS check as successful, tick **Enforce HTTPS**.
