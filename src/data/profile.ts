@@ -6,12 +6,19 @@ import breithorn from '../assets/photos/breithorn.webp';
 import cadini from '../assets/photos/cadini.webp';
 import treCime from '../assets/photos/tre-cime.webp';
 import fushimi from '../assets/photos/fushimi-inari.webp';
+import olperer from '../assets/photos/olperer-bridge.webp';
+import elNido from '../assets/photos/el-nido-drone.webp';
+import oeschinensee from '../assets/photos/oeschinensee.png';
+import parthenon from '../assets/photos/parthenon.webp';
+import munichBotanical from '../assets/photos/munich-botanical.webp';
+import trailRace from '../assets/photos/trail-race.png';
 
 export const profile = {
   name: 'Rannie John Lopez',
   shortName: 'RJ Lopez',
   role: 'Data Platform Engineer',
   pitch: 'I build reliable data platforms on AWS, Airflow & Kubernetes.',
+  years: '5+',
   location: 'Munich, Germany',
   workAuth: 'EU citizen, no visa sponsorship required',
   email: 'contact@rjlopez.me',
@@ -86,7 +93,7 @@ export const skills = [
 // ---------- Life outside work (the /life page) ----------
 export const life = {
   intro:
-    'Away from the terminal I am on a trail, a summit ridge or a start line. Mountains, long-distance running and travel keep me patient, consistent and comfortable with long, hard problems.',
+    'Away from the terminal I am on a trail, a summit ridge or a start line, usually with a camera or a drone in my pack. Mountains, long-distance running, travel and photography keep me patient, consistent and comfortable with long, hard problems.',
   stats: [
     { value: '4:29', label: 'marathon PB', icon: 'clock' },
     { value: 'Ultra', label: 'Grossglockner Ultra-Trail', icon: 'run' },
@@ -102,31 +109,50 @@ export const life = {
     { title: 'Marathon', value: '4:29', note: 'Personal best over 42.195 km.' },
     { title: 'Ultramarathon', value: 'Grossglockner Ultra-Trail', note: "Trail ultra around Austria's highest mountain." },
   ],
-  // Grouped by region. Codes are ISO 3166 alpha-2.
+  // Countries visited. `id` is the ISO 3166 numeric code (matches world-atlas),
+  // `at` is [longitude, latitude] of the capital, used for the map marker.
   travel: [
-    {
-      region: 'Europe',
-      countries: [
-        ['DE', 'Germany'], ['AT', 'Austria'], ['CH', 'Switzerland'], ['IT', 'Italy'], ['FR', 'France'],
-        ['NL', 'Netherlands'], ['CZ', 'Czechia'], ['SK', 'Slovakia'], ['HU', 'Hungary'], ['SI', 'Slovenia'],
-        ['HR', 'Croatia'], ['GR', 'Greece'], ['ES', 'Spain'], ['DK', 'Denmark'], ['NO', 'Norway'], ['SE', 'Sweden'],
-      ],
-    },
-    {
-      region: 'Asia & Middle East',
-      countries: [
-        ['PH', 'Philippines'], ['JP', 'Japan'], ['SG', 'Singapore'], ['AE', 'UAE'], ['OM', 'Oman'], ['SA', 'Saudi Arabia'],
-      ],
-    },
-    { region: 'Oceania', countries: [['AU', 'Australia']] },
+    { code: 'DE', name: 'Germany', id: '276', region: 'Europe', at: [13.4, 52.52], home: true },
+    { code: 'AT', name: 'Austria', id: '040', region: 'Europe', at: [16.37, 48.21] },
+    { code: 'CH', name: 'Switzerland', id: '756', region: 'Europe', at: [7.45, 46.95] },
+    { code: 'IT', name: 'Italy', id: '380', region: 'Europe', at: [12.5, 41.9] },
+    { code: 'FR', name: 'France', id: '250', region: 'Europe', at: [2.35, 48.86] },
+    { code: 'NL', name: 'Netherlands', id: '528', region: 'Europe', at: [4.9, 52.37] },
+    { code: 'CZ', name: 'Czechia', id: '203', region: 'Europe', at: [14.42, 50.09] },
+    { code: 'SK', name: 'Slovakia', id: '703', region: 'Europe', at: [17.11, 48.15] },
+    { code: 'HU', name: 'Hungary', id: '348', region: 'Europe', at: [19.04, 47.5] },
+    { code: 'SI', name: 'Slovenia', id: '705', region: 'Europe', at: [14.51, 46.06] },
+    { code: 'HR', name: 'Croatia', id: '191', region: 'Europe', at: [15.98, 45.81] },
+    { code: 'GR', name: 'Greece', id: '300', region: 'Europe', at: [23.73, 37.98] },
+    { code: 'ES', name: 'Spain', id: '724', region: 'Europe', at: [-3.7, 40.42] },
+    { code: 'DK', name: 'Denmark', id: '208', region: 'Europe', at: [12.57, 55.68] },
+    { code: 'NO', name: 'Norway', id: '578', region: 'Europe', at: [10.75, 59.91] },
+    { code: 'SE', name: 'Sweden', id: '752', region: 'Europe', at: [18.07, 59.33] },
+    { code: 'PH', name: 'Philippines', id: '608', region: 'Asia & Middle East', at: [120.98, 14.6], home: true },
+    { code: 'JP', name: 'Japan', id: '392', region: 'Asia & Middle East', at: [139.69, 35.69] },
+    { code: 'SG', name: 'Singapore', id: '702', region: 'Asia & Middle East', at: [103.82, 1.35] },
+    { code: 'AE', name: 'UAE', id: '784', region: 'Asia & Middle East', at: [54.37, 24.45] },
+    { code: 'OM', name: 'Oman', id: '512', region: 'Asia & Middle East', at: [58.41, 23.59] },
+    { code: 'SA', name: 'Saudi Arabia', id: '682', region: 'Asia & Middle East', at: [46.68, 24.71] },
+    { code: 'AU', name: 'Australia', id: '036', region: 'Oceania', at: [149.13, -35.28] },
+  ] as { code: string; name: string; id: string; region: string; at: [number, number]; home?: boolean }[],
+  // Photography: camera and drone. `kind` shows as a small tag on the photo.
+  photography: [
+    { src: elNido, alt: 'Aerial drone view of limestone cliffs, a white beach and turquoise reef in El Nido, Palawan', caption: 'El Nido, Palawan', kind: 'drone' },
+    { src: oeschinensee, alt: 'Turquoise Oeschinensee lake below snowy cliffs, two trees on a grassy ridge in the foreground', caption: 'Oeschinensee, Switzerland', kind: 'camera' },
+    { src: parthenon, alt: 'The Parthenon on the Acropolis against a deep blue sky', caption: 'Parthenon, Athens', kind: 'camera' },
+    { src: munichBotanical, alt: 'Spring flower beds in front of the Botanical Garden building in Munich', caption: 'Botanical Garden, Munich', kind: 'camera' },
+    { src: treCime, alt: 'The Tre Cime di Lavaredo towers under dramatic clouds', caption: 'Tre Cime di Lavaredo', kind: 'camera' },
+    { src: fushimi, alt: 'Stone steps through the orange torii gates of Fushimi Inari', caption: 'Fushimi Inari, Kyoto', kind: 'camera' },
   ],
+  runningPhoto: { src: trailRace, alt: 'RJ running a mountain trail race with poles and a race bib', caption: 'Race day on the trail' },
+  // Trail photos of RJ (gallery at the bottom of /life). The first one is also the summits photo.
   photos: [
-    { src: breithorn, alt: 'RJ with arms spread on the snowy Breithorn summit ridge', caption: 'Breithorn summit, 4,164 m', wide: true },
+    { src: breithorn, alt: 'RJ with arms spread on the snowy Breithorn summit ridge', caption: 'Breithorn summit, 4,164 m' },
+    { src: olperer, alt: 'RJ hanging from the suspension bridge above Schlegeis reservoir in the Zillertal Alps', caption: 'Olperer suspension bridge, Zillertal' },
     { src: cadini, alt: 'RJ sitting on a rocky outcrop facing the Cadini di Misurina spires', caption: 'Cadini di Misurina, Dolomites' },
     { src: seceda, alt: 'RJ at the Seceda ridge in the Dolomites', caption: 'Seceda, Dolomites' },
-    { src: treCime, alt: 'The Tre Cime di Lavaredo towers under dramatic clouds', caption: 'Tre Cime di Lavaredo' },
     { src: koenigssee, alt: 'RJ above Lake Königssee in the Berchtesgaden Alps', caption: 'Above Königssee, Berchtesgaden' },
-    { src: fushimi, alt: 'Stone steps through the orange torii gates of Fushimi Inari', caption: 'Fushimi Inari, Kyoto' },
     { src: winterSummit, alt: 'RJ on a snowy summit above a sea of clouds', caption: 'Winter summit above the clouds' },
   ],
 };

@@ -1,0 +1,123 @@
+---
+// Static SVG world map rendered at build time (no client JS).
+// Visited countries glow neon green; pink markers sit on each capital,
+// with great-circle routes drawn from home base (Munich).
+import { geoNaturalEarth1, geoPath } from 'd3-geo';
+import { feature } from 'topojson-client';
+import world from 'world-atlas/countries-110m.json';
+
+interface Country { code: string; name: string; id: string; at: [number, number]; home?: boolean }
+interface Props { countries: Country[] }
+const { countries } = Astro.props;
+
+const W = 1000;
+const H = 560;
+const HOME: [number, number] = [11.58, 48.14]; // Munich
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const shapes = (feature(world as any, (world as any).objects.countries) as any).features.filter(
+  (f: any) => f.id !== '010', // drop Antarctica
+);
+
+// Frame the part of the world the trips cover (Western Europe → Japan, Norway → Australia).
+const projection = geoNaturalEarth1().fitExtent(
+  [[16, 16], [W - 16, H - 16]],
+  { type: 'MultiPoint', coordinates: [[-14, -44], [158, 72], [-14, 72], [158, -44]] },
+);
+const path = geoPath(projection).digits(1);
+
+const visited = new Map(countries.map((c) => [c.id, c]));
+const land = shapes
+  .map((f: any) => ({ d: path(f), c: visited.get(String(f.id)) }))
+  .filter((s: any) => s.d);
+
+const markers = countries
+  .map((c) => ({ ...c, xy: projection(c.at) }))
+  .filter((m) => m.xy && m.xy[0] >= 0 && m.xy[0] <= W && m.xy[1] >= 0 && m.xy[1] <= H);
+
+const routes = countries
+  .filter((c) => c.code !== 'DE')
+  .map((c) => path({ type: 'LineString', coordinates: [HOME, c.at] }))
+  .filter(Boolean);
+
+const [hx, hy] = projection(HOME) ?? [0, 0];
+---
+
+<figure class="travel-map card overflow-hidden p-0">
+  <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="map-title" class="block h-auto w-full">
+    <title id="map-title">World map highlighting the {countries.length} countries RJ has visited</title>
+    <defs>
+      <pattern id="map-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+        <path d="M40 0H0V40" fill="none" stroke="#39ff88" stroke-opacity=".05" />
+      </pattern>
+    </defs>
+    <rect width={W} height={H} fill="url(#map-grid)" />
+
+    <g class="land">
+      {land.map((s: any) => s.c ? (
+        <path d={s.d} class="country visited"><title>{s.c.name}</title></path>
+      ) : (
+        <path d={s.d} class="country" />
+      ))}
+    </g>
+
+    <g class="routes" aria-hidden="true">
+      {routes.map((d) => <path d={d!} />)}
+    </g>
+
+    <g class="markers">
+      {markers.map((m) => (
+        <g transform={`translate(${m.xy![0].toFixed(1)} ${m.xy![1].toFixed(1)})`}>
+          {m.home && <circle r="9" class="pulse" />}
+          <circle r={m.home ? 4.5 : 3.2} class:list={['dot', m.home && 'home']}><title>{m.name}</title></circle>
+        </g>
+      ))}
+      <text x={hx + 10} y={hy - 10} class="label">munich</text>
+    </g>
+  </svg>
+  <figcaption class="flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-line px-5 py-3 text-sm text-muted">
+    <span class="flex items-center gap-2"><span class="h-3 w-3 rounded-sm border border-neon bg-neon/35"></span> visited</span>
+    <span class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-pink"></span> capital</span>
+    <span class="flex items-center gap-2"><span class="h-2.5 w-2.5 rounded-full bg-neon ring-2 ring-neon/40"></span> home: Philippines &amp; Germany</span>
+  </figcaption>
+</figure>
+
+<style>
+  .travel-map .country {
+    fill: #13201c;
+    stroke: #24423a;
+    stroke-width: 0.6;
+    transition: fill 0.25s;
+  }
+  .travel-map .country.visited {
+    fill: rgb(57 255 136 / 0.32);
+    stroke: #39ff88;
+    stroke-width: 0.9;
+    filter: drop-shadow(0 0 4px rgb(57 255 136 / 0.45));
+  }
+  .travel-map .country.visited:hover { fill: rgb(57 255 136 / 0.6); }
+  .travel-map .routes path {
+    fill: none;
+    stroke: #ff2e97;
+    stroke-opacity: 0.55;
+    stroke-width: 1.1;
+    stroke-dasharray: 3 4;
+    animation: route-flow 2.5s linear infinite;
+  }
+  .travel-map .dot { fill: #ff2e97; stroke: #070b0a; stroke-width: 1; }
+  .travel-map .dot.home { fill: #39ff88; }
+  .travel-map .pulse {
+    fill: none;
+    stroke: #39ff88;
+    stroke-width: 1.5;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: map-pulse 2.2s ease-out infinite;
+  }
+  .travel-map .label { fill: #b4c8be; font: 500 13px 'JetBrains Mono', monospace; }
+  @keyframes route-flow { to { stroke-dashoffset: -14; } }
+  @keyframes map-pulse {
+    from { opacity: 0.9; transform: scale(0.6); }
+    to { opacity: 0; transform: scale(2.2); }
+  }
+</style>

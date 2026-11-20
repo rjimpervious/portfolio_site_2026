@@ -27,8 +27,14 @@ import { profile, experience, education, skills, life } from '../data/profile';
             <span class="glitch" data-text="Rannie John">Rannie John</span><br />
             <span class="neon-gradient-text">Lopez</span>
           </h1>
-          <p data-reveal style="--d:200" class="mt-6 font-mono text-lg text-pink-soft sm:text-xl">&gt; {profile.role}</p>
-          <p data-reveal style="--d:300" class="mt-4 max-w-xl text-xl leading-relaxed text-ink sm:text-2xl sm:leading-snug">{profile.pitch}</p>
+          <div data-reveal style="--d:200" class="mt-6 flex flex-wrap items-center gap-x-4 gap-y-3">
+            <p class="font-mono text-lg text-pink-soft sm:text-xl">&gt; {profile.role}</p>
+            <p class="years-badge">
+              <span class="font-display text-2xl leading-none font-bold text-neon text-glow">{profile.years}</span>
+              <span class="text-sm leading-tight font-semibold text-ink">years of<br />experience</span>
+            </p>
+          </div>
+          <p data-reveal style="--d:300" class="mt-5 max-w-xl text-xl leading-relaxed text-ink sm:text-2xl sm:leading-snug">{profile.pitch}</p>
           <p data-reveal style="--d:350" class="mt-5 flex items-start gap-2 text-base text-muted">
             <Icon name="pin" class="mt-1 h-4 w-4 shrink-0 text-neon" /> <span>{profile.location} · {profile.workAuth}</span>
           </p>

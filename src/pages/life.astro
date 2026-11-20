@@ -6,10 +6,15 @@ import PhotoCard from '../components/PhotoCard.astro';
 import Icon from '../components/Icon.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import TravelMap from '../components/TravelMap.astro';
 import heroPhoto from '../assets/photos/cadini.webp';
 import { profile, life } from '../data/profile';
 
-const countryCount = life.travel.reduce((n, r) => n + r.countries.length, 0);
+const countryCount = life.travel.length;
+const regions = [...new Set(life.travel.map((c) => c.region))].map((region) => ({
+  region,
+  countries: life.travel.filter((c) => c.region === region),
+}));
 ---
 
 <Base
@@ -81,53 +86,67 @@ const countryCount = life.travel.reduce((n, r) => n + r.countries.length, 0);
 
     <!-- ============ RUNNING ============ -->
     <Section id="running" label="running" title="Long distances, on purpose." accent="pink">
-      <div class="grid gap-6 md:grid-cols-2">
-        {life.running.map((r, i) => (
-          <div data-reveal style={`--d:${i * 100}`} class:list={['card relative overflow-hidden p-7 sm:p-9', i % 2 && 'card-pink']}>
-            <Icon name="run" class="absolute -right-4 -bottom-4 h-36 w-36 text-neon/5" />
-            <p class="font-mono text-base text-muted">{r.title}</p>
-            <p class:list={['mt-2 font-display font-bold', r.value.length < 8 ? 'text-6xl' : 'text-3xl sm:text-4xl', i % 2 ? 'text-pink-soft text-glow-pink' : 'text-neon text-glow']}>{r.value}</p>
-            <p class="mt-4 text-[1.05rem] text-ink">{r.note}</p>
-          </div>
-        ))}
+      <div class="grid gap-6 lg:grid-cols-[1.2fr_1fr]">
+        <PhotoCard
+          src={life.runningPhoto.src}
+          alt={life.runningPhoto.alt}
+          caption={life.runningPhoto.caption}
+          imgClass="aspect-[3/2] lg:aspect-auto"
+          sizes="(min-width: 1024px) 55vw, 100vw"
+        />
+        <div class="flex flex-col gap-6">
+          {life.running.map((r, i) => (
+            <div data-reveal style={`--d:${i * 100}`} class:list={['card relative flex-1 overflow-hidden p-7 sm:p-8', i % 2 && 'card-pink']}>
+              <Icon name="run" class="absolute -right-4 -bottom-4 h-32 w-32 text-neon/5" />
+              <p class="font-mono text-base text-muted">{r.title}</p>
+              <p class:list={['mt-2 font-display font-bold', r.value.length < 8 ? 'text-6xl' : 'text-3xl', i % 2 ? 'text-pink-soft text-glow-pink' : 'text-neon text-glow']}>{r.value}</p>
+              <p class="mt-3 text-[1.05rem] text-ink">{r.note}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </Section>
 
     <!-- ============ TRAVEL ============ -->
     <Section id="travel" label="travel" title={`${countryCount} countries and counting.`}>
-      <div class="grid gap-6 lg:grid-cols-[1.6fr_1fr]">
-        <div class="space-y-6">
-          {life.travel.map((r, i) => (
-            <div data-reveal style={`--d:${i * 100}`} class="card p-6 sm:p-7">
-              <div class="flex items-baseline justify-between gap-4">
-                <h3 class="font-display text-xl font-semibold">{r.region}</h3>
-                <span class="font-mono text-base text-pink-soft">{String(r.countries.length).padStart(2, '0')}</span>
-              </div>
-              <ul class="mt-4 flex flex-wrap gap-2">
-                {r.countries.map(([code, name]) => (
-                  <li class="flex items-center gap-2 rounded-md border border-line bg-surface-2 px-3 py-1.5 text-[0.95rem]">
-                    <span class="font-mono text-xs font-semibold text-neon">{code}</span>
-                    <span class="text-ink">{name}</span>
-                  </li>
-                ))}
-              </ul>
+      <div data-reveal>
+        <TravelMap countries={life.travel} />
+      </div>
+      <div class="mt-6 grid gap-4 md:grid-cols-3">
+        {regions.map((r, i) => (
+          <div data-reveal style={`--d:${i * 100}`} class="card p-5">
+            <div class="flex items-baseline justify-between gap-4">
+              <h3 class="font-display text-lg font-semibold">{r.region}</h3>
+              <span class="font-mono text-base text-pink-soft">{String(r.countries.length).padStart(2, '0')}</span>
             </div>
-          ))}
-        </div>
-        <PhotoCard
-          src={life.photos[5].src}
-          alt={life.photos[5].alt}
-          caption={life.photos[5].caption}
-          imgClass="aspect-[4/5] lg:aspect-auto"
-          sizes="(min-width: 1024px) 38vw, 100vw"
-        />
+            <p class="mt-2 text-[0.95rem] leading-relaxed text-muted">{r.countries.map((c) => c.name).join(' · ')}</p>
+          </div>
+        ))}
+      </div>
+    </Section>
+
+    <!-- ============ PHOTOGRAPHY ============ -->
+    <Section id="photography" label="photography" title="Through the lens." accent="pink">
+      <p data-reveal class="-mt-4 mb-10 max-w-2xl text-[1.1rem] leading-relaxed text-ink">
+        I shoot with a camera and a drone wherever the trail or the trip goes: alpine lakes, coastlines from above,
+        old cities and quiet gardens.
+      </p>
+      <div class="columns-1 gap-5 sm:columns-2 lg:columns-3">
+        {life.photography.map((p, i) => (
+          <div class="relative mb-5 break-inside-avoid">
+            <PhotoCard src={p.src} alt={p.alt} caption={p.caption} index={i} imgClass="!h-auto" sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" />
+            <span class:list={['absolute top-3 right-3 z-10 rounded-md border px-2 py-0.5 font-mono text-xs backdrop-blur', p.kind === 'drone' ? 'border-neon/60 bg-void/60 text-neon' : 'border-pink/60 bg-void/60 text-pink-soft']}>
+              {p.kind}
+            </span>
+          </div>
+        ))}
       </div>
     </Section>
 
     <!-- ============ GALLERY ============ -->
-    <Section id="gallery" label="gallery" title="From the trail." accent="pink">
+    <Section id="gallery" label="gallery" title="From the trail.">
       <div class="columns-1 gap-5 sm:columns-2 lg:columns-3">
-        {life.photos.map((p, i) => (
+        {life.photos.slice(1).map((p, i) => (
           <PhotoCard {...p} index={i} class="mb-5 break-inside-avoid" imgClass="!h-auto" sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" />
         ))}
       </div>
