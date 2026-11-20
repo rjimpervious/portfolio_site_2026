@@ -80,12 +80,6 @@ body {
 .btn-ghost { @apply border border-pink/60 text-pink-soft; }
 .btn-ghost:hover { @apply bg-pink/10 border-pink; box-shadow: 0 0 24px -6px rgb(255 46 151 / 0.6); }
 
-/* ---------- Years-of-experience badge (hero) ---------- */
-.years-badge {
-  @apply inline-flex items-center gap-2.5 rounded-xl border border-neon/50 bg-neon/10 px-3.5 py-2;
-  box-shadow: 0 0 24px -8px rgb(57 255 136 / 0.6), inset 0 0 12px -6px rgb(57 255 136 / 0.5);
-}
-
 /* ---------- Chips ---------- */
 .chip { @apply rounded-md border border-line bg-surface-2 px-3 py-1 text-sm font-medium text-neon-soft; }
 
