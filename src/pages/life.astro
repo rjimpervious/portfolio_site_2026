@@ -34,8 +34,7 @@ const regions = [...new Set(life.travel.map((c) => c.region))].map((region) => (
         loading="eager"
         class="absolute inset-0 h-full w-full object-cover object-[50%_60%]"
       />
-      <div class="absolute inset-0 bg-gradient-to-b from-void/70 via-void/30 to-void"></div>
-      <div class="absolute inset-0 bg-gradient-to-r from-void/85 via-void/45 to-transparent"></div>
+      <div class="shade-hero absolute inset-0"></div>
       <div class="cyber-grid pointer-events-none absolute inset-0 opacity-50" aria-hidden="true"></div>
       <div class="relative mx-auto w-full max-w-6xl">
         <p data-reveal class="cursor font-mono text-base text-pink-soft">// life_outside_work</p>

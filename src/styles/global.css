@@ -44,6 +44,7 @@ body {
     linear-gradient(rgb(57 255 136 / 0.05) 1px, transparent 1px),
     linear-gradient(90deg, rgb(57 255 136 / 0.05) 1px, transparent 1px);
   background-size: 44px 44px;
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
   mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
 }
 
@@ -51,10 +52,34 @@ body {
 .text-glow { text-shadow: 0 0 18px rgb(57 255 136 / 0.45); }
 .text-glow-pink { text-shadow: 0 0 18px rgb(255 46 151 / 0.5); }
 .neon-gradient-text {
-  background: linear-gradient(100deg, var(--color-neon) 10%, var(--color-neon-soft) 45%, var(--color-pink) 95%);
+  display: inline-block;
+  background-image: linear-gradient(100deg, #39ff88 10%, #7dffb3 45%, #ff2e97 95%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  -webkit-text-fill-color: transparent;
+  /* own compositing layer: avoids Safari painting clipped text black inside animated parents */
+  transform: translateZ(0);
+}
+
+/* ---------- Photo shades ----------
+   Plain rgba gradients on purpose: Tailwind 4's bg-gradient utilities rely on
+   @property + oklab interpolation, which older iOS Safari drops entirely. */
+.shade-hero {
+  background-image:
+    linear-gradient(90deg, rgba(7, 11, 10, 0.85) 0%, rgba(7, 11, 10, 0.45) 55%, rgba(7, 11, 10, 0) 100%),
+    linear-gradient(180deg, rgba(7, 11, 10, 0.7) 0%, rgba(7, 11, 10, 0.3) 45%, #070b0a 100%);
+}
+@media (max-width: 767px) {
+  /* Text spans the full width on phones, so darken the whole photo evenly. */
+  .shade-hero {
+    background-image: linear-gradient(180deg, rgba(7, 11, 10, 0.82) 0%, rgba(7, 11, 10, 0.72) 55%, rgba(7, 11, 10, 0.9) 80%, #070b0a 100%);
+  }
+}
+.shade-caption { background-image: linear-gradient(0deg, #070b0a 0%, rgba(7, 11, 10, 0.1) 45%, rgba(7, 11, 10, 0) 100%); }
+.shade-teaser { background-image: linear-gradient(0deg, rgba(13, 21, 19, 0.7) 0%, rgba(13, 21, 19, 0) 100%); }
+@media (min-width: 768px) {
+  .shade-teaser { background-image: linear-gradient(90deg, rgba(13, 21, 19, 0) 0%, rgba(13, 21, 19, 0.4) 100%); }
 }
 
 /* ---------- Cards ---------- */
