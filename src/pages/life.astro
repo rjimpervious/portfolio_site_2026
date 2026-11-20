@@ -1,0 +1,141 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Section from '../components/Section.astro';
+import PhotoCard from '../components/PhotoCard.astro';
+import Icon from '../components/Icon.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import heroPhoto from '../assets/photos/cadini.webp';
+import { profile, life } from '../data/profile';
+
+const countryCount = life.travel.reduce((n, r) => n + r.countries.length, 0);
+---
+
+<Base
+  title={`Life outside work · ${profile.name}`}
+  description={`${profile.name} outside work: mountaineering (Breithorn, Zugspitze, Mt. Apo), marathon and ultra-trail running, and travel to ${countryCount} countries.`}
+>
+  <SiteHeader />
+
+  <main>
+    <!-- ============ HERO ============ -->
+    <section class="relative flex min-h-[88svh] items-end overflow-hidden px-4 pt-28 pb-16 sm:px-8">
+      <Image
+        src={heroPhoto}
+        alt="RJ sitting on a rocky outcrop facing the Cadini di Misurina spires in the Dolomites"
+        widths={[640, 1080, 1600, 2000]}
+        sizes="100vw"
+        loading="eager"
+        class="absolute inset-0 h-full w-full object-cover object-[50%_60%]"
+      />
+      <div class="absolute inset-0 bg-gradient-to-b from-void/70 via-void/30 to-void"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-void/85 via-void/45 to-transparent"></div>
+      <div class="cyber-grid pointer-events-none absolute inset-0 opacity-50" aria-hidden="true"></div>
+      <div class="relative mx-auto w-full max-w-6xl">
+        <p data-reveal class="cursor font-mono text-base text-pink-soft">// life_outside_work</p>
+        <h1 data-reveal style="--d:100" class="mt-3 font-display text-5xl leading-[1.05] font-bold tracking-tight sm:text-7xl">
+          Offline, <span class="neon-gradient-text">uphill.</span>
+        </h1>
+        <p data-reveal style="--d:200" class="mt-5 max-w-2xl text-xl leading-relaxed text-ink [text-shadow:0_1px_12px_rgb(0_0_0/0.6)]">{life.intro}</p>
+        <ul class="mt-10 grid grid-cols-2 gap-3 lg:grid-cols-4">
+          {life.stats.map((s, i) => (
+            <li data-reveal style={`--d:${300 + i * 80}`} class:list={['card flex items-center gap-4 p-4 sm:p-5', i % 2 && 'card-pink']}>
+              <span class="hidden h-11 w-11 shrink-0 place-items-center rounded-xl border border-line bg-surface-2 text-neon sm:grid">
+                <Icon name={s.icon as 'clock' | 'run' | 'mountain' | 'globe'} />
+              </span>
+              <span>
+                <span class:list={['block font-display text-2xl font-bold', i % 2 ? 'text-pink-soft' : 'text-neon']}>{s.value}</span>
+                <span class="block text-sm leading-snug text-muted sm:text-[0.95rem]">{s.label}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ MOUNTAINEERING ============ -->
+    <Section id="mountains" label="mountaineering" title="Summits so far.">
+      <div class="grid gap-6 lg:grid-cols-[1.1fr_1fr]">
+        <PhotoCard
+          src={life.photos[0].src}
+          alt={life.photos[0].alt}
+          caption={life.photos[0].caption}
+          imgClass="aspect-[4/5] lg:aspect-auto"
+          sizes="(min-width: 1024px) 50vw, 100vw"
+        />
+        <ol class="flex flex-col gap-4">
+          {life.summits.map((m, i) => (
+            <li data-reveal style={`--d:${i * 100}`} class:list={['card flex flex-1 flex-col justify-center p-6 sm:p-7', i % 2 && 'card-pink']}>
+              <div class="flex flex-wrap items-baseline justify-between gap-x-4">
+                <h3 class="font-display text-2xl font-semibold">{m.name}</h3>
+                <span class:list={['font-mono text-2xl font-medium', i % 2 ? 'text-pink-soft' : 'text-neon text-glow']}>{m.height}</span>
+              </div>
+              <p class="mt-1 text-base text-muted">{m.where}</p>
+              <p class="mt-3 text-[1.05rem] text-ink">{m.note}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </Section>
+
+    <!-- ============ RUNNING ============ -->
+    <Section id="running" label="running" title="Long distances, on purpose." accent="pink">
+      <div class="grid gap-6 md:grid-cols-2">
+        {life.running.map((r, i) => (
+          <div data-reveal style={`--d:${i * 100}`} class:list={['card relative overflow-hidden p-7 sm:p-9', i % 2 && 'card-pink']}>
+            <Icon name="run" class="absolute -right-4 -bottom-4 h-36 w-36 text-neon/5" />
+            <p class="font-mono text-base text-muted">{r.title}</p>
+            <p class:list={['mt-2 font-display font-bold', r.value.length < 8 ? 'text-6xl' : 'text-3xl sm:text-4xl', i % 2 ? 'text-pink-soft text-glow-pink' : 'text-neon text-glow']}>{r.value}</p>
+            <p class="mt-4 text-[1.05rem] text-ink">{r.note}</p>
+          </div>
+        ))}
+      </div>
+    </Section>
+
+    <!-- ============ TRAVEL ============ -->
+    <Section id="travel" label="travel" title={`${countryCount} countries and counting.`}>
+      <div class="grid gap-6 lg:grid-cols-[1.6fr_1fr]">
+        <div class="space-y-6">
+          {life.travel.map((r, i) => (
+            <div data-reveal style={`--d:${i * 100}`} class="card p-6 sm:p-7">
+              <div class="flex items-baseline justify-between gap-4">
+                <h3 class="font-display text-xl font-semibold">{r.region}</h3>
+                <span class="font-mono text-base text-pink-soft">{String(r.countries.length).padStart(2, '0')}</span>
+              </div>
+              <ul class="mt-4 flex flex-wrap gap-2">
+                {r.countries.map(([code, name]) => (
+                  <li class="flex items-center gap-2 rounded-md border border-line bg-surface-2 px-3 py-1.5 text-[0.95rem]">
+                    <span class="font-mono text-xs font-semibold text-neon">{code}</span>
+                    <span class="text-ink">{name}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <PhotoCard
+          src={life.photos[5].src}
+          alt={life.photos[5].alt}
+          caption={life.photos[5].caption}
+          imgClass="aspect-[4/5] lg:aspect-auto"
+          sizes="(min-width: 1024px) 38vw, 100vw"
+        />
+      </div>
+    </Section>
+
+    <!-- ============ GALLERY ============ -->
+    <Section id="gallery" label="gallery" title="From the trail." accent="pink">
+      <div class="columns-1 gap-5 sm:columns-2 lg:columns-3">
+        {life.photos.map((p, i) => (
+          <PhotoCard {...p} index={i} class="mb-5 break-inside-avoid" imgClass="!h-auto" sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" />
+        ))}
+      </div>
+      <p class="mt-10 text-center">
+        <a href="/#contact" class="btn btn-ghost">Back to work: get in touch <Icon name="arrow" class="h-4 w-4" /></a>
+      </p>
+    </Section>
+  </main>
+
+  <SiteFooter />
+</Base>

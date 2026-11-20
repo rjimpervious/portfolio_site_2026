@@ -1,7 +1,7 @@
 ---
 // Small inline icon set (stroke icons, inherit currentColor).
 interface Props {
-  name: 'github' | 'linkedin' | 'mail' | 'mountain' | 'run' | 'clock' | 'pin' | 'arrow';
+  name: 'github' | 'linkedin' | 'mail' | 'mountain' | 'run' | 'clock' | 'pin' | 'arrow' | 'globe';
   class?: string;
 }
 const { name, class: cls = 'h-5 w-5' } = Astro.props;
@@ -15,6 +15,7 @@ const paths: Record<Props['name'], string> = {
   clock: 'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zm0-14v4l3 2',
   pin: 'M12 22s-8-6-8-12a8 8 0 0 1 16 0c0 6-8 12-8 12zm0-9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z',
   arrow: 'M5 12h14M13 6l6 6-6 6',
+  globe: 'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zM2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20',
 };
 ---
 

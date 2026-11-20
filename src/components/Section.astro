@@ -11,8 +11,8 @@ const { id, label, title, accent = 'neon' } = Astro.props;
 
 <section id={id} class="relative px-4 py-20 sm:px-8 sm:py-28">
   <div class="mx-auto max-w-6xl">
-    <p data-reveal class:list={['font-mono text-sm', accent === 'pink' ? 'text-pink-soft' : 'text-neon']}>// {label}</p>
-    <h2 data-reveal style="--d:80" class="mt-2 font-display text-3xl font-bold tracking-tight sm:text-5xl">{title}</h2>
+    <p data-reveal class:list={['font-mono text-base', accent === 'pink' ? 'text-pink-soft' : 'text-neon']}>// {label}</p>
+    <h2 data-reveal style="--d:80" class="mt-2 font-display text-[2.1rem] leading-tight font-bold tracking-tight sm:text-5xl">{title}</h2>
     <div class="mt-10 sm:mt-14">
       <slot />
     </div>

@@ -2,6 +2,10 @@
 import seceda from '../assets/photos/seceda.webp';
 import winterSummit from '../assets/photos/winter-summit.webp';
 import koenigssee from '../assets/photos/koenigssee.webp';
+import breithorn from '../assets/photos/breithorn.webp';
+import cadini from '../assets/photos/cadini.webp';
+import treCime from '../assets/photos/tre-cime.webp';
+import fushimi from '../assets/photos/fushimi-inari.webp';
 
 export const profile = {
   name: 'Rannie John Lopez',
@@ -79,18 +83,50 @@ export const skills = [
   { group: 'Languages', items: ['English (C1, IELTS 8.0)', 'German (B2, telc)'] },
 ];
 
-export const outside = {
+// ---------- Life outside work (the /life page) ----------
+export const life = {
   intro:
-    'Away from the terminal I am on a trail or a start line. Hiking the Alps and training for marathons keep me patient, consistent and comfortable with long, hard problems.',
-  photos: [
-    { src: seceda, alt: 'RJ at the Seceda ridge in the Dolomites', caption: 'Seceda, Dolomites' },
-    { src: koenigssee, alt: 'RJ above Lake Königssee in the Berchtesgaden Alps', caption: 'Above Königssee, Berchtesgaden' },
-    { src: winterSummit, alt: 'RJ on a snowy summit above a sea of clouds', caption: 'Winter summit above the clouds' },
-  ],
-  // TODO(RJ): replace these placeholders with your real numbers and races.
+    'Away from the terminal I am on a trail, a summit ridge or a start line. Mountains, long-distance running and travel keep me patient, consistent and comfortable with long, hard problems.',
   stats: [
-    { value: 'Alps', label: 'favourite playground', icon: 'mountain' },
-    { value: '42.195 km', label: 'marathoner', icon: 'run' },
-    { value: '—', label: 'marathon PB (add yours)', icon: 'clock' },
+    { value: '4:29', label: 'marathon PB', icon: 'clock' },
+    { value: 'Ultra', label: 'Grossglockner Ultra-Trail', icon: 'run' },
+    { value: '4,164 m', label: 'highest summit, Breithorn', icon: 'mountain' },
+    { value: '23', label: 'countries visited', icon: 'globe' },
+  ],
+  summits: [
+    { name: 'Breithorn', height: '4,164 m', where: 'Pennine Alps, Switzerland', note: 'First 4,000er: glacier, crampons and rope.' },
+    { name: 'Zugspitze', height: '2,962 m', where: 'Wetterstein, Germany', note: "Germany's highest peak." },
+    { name: 'Mt. Apo', height: '2,954 m', where: 'Mindanao, Philippines', note: 'Highest mountain in the Philippines, my home island.' },
+  ],
+  running: [
+    { title: 'Marathon', value: '4:29', note: 'Personal best over 42.195 km.' },
+    { title: 'Ultramarathon', value: 'Grossglockner Ultra-Trail', note: "Trail ultra around Austria's highest mountain." },
+  ],
+  // Grouped by region. Codes are ISO 3166 alpha-2.
+  travel: [
+    {
+      region: 'Europe',
+      countries: [
+        ['DE', 'Germany'], ['AT', 'Austria'], ['CH', 'Switzerland'], ['IT', 'Italy'], ['FR', 'France'],
+        ['NL', 'Netherlands'], ['CZ', 'Czechia'], ['SK', 'Slovakia'], ['HU', 'Hungary'], ['SI', 'Slovenia'],
+        ['HR', 'Croatia'], ['GR', 'Greece'], ['ES', 'Spain'], ['DK', 'Denmark'], ['NO', 'Norway'], ['SE', 'Sweden'],
+      ],
+    },
+    {
+      region: 'Asia & Middle East',
+      countries: [
+        ['PH', 'Philippines'], ['JP', 'Japan'], ['SG', 'Singapore'], ['AE', 'UAE'], ['OM', 'Oman'], ['SA', 'Saudi Arabia'],
+      ],
+    },
+    { region: 'Oceania', countries: [['AU', 'Australia']] },
+  ],
+  photos: [
+    { src: breithorn, alt: 'RJ with arms spread on the snowy Breithorn summit ridge', caption: 'Breithorn summit, 4,164 m', wide: true },
+    { src: cadini, alt: 'RJ sitting on a rocky outcrop facing the Cadini di Misurina spires', caption: 'Cadini di Misurina, Dolomites' },
+    { src: seceda, alt: 'RJ at the Seceda ridge in the Dolomites', caption: 'Seceda, Dolomites' },
+    { src: treCime, alt: 'The Tre Cime di Lavaredo towers under dramatic clouds', caption: 'Tre Cime di Lavaredo' },
+    { src: koenigssee, alt: 'RJ above Lake Königssee in the Berchtesgaden Alps', caption: 'Above Königssee, Berchtesgaden' },
+    { src: fushimi, alt: 'Stone steps through the orange torii gates of Fushimi Inari', caption: 'Fushimi Inari, Kyoto' },
+    { src: winterSummit, alt: 'RJ on a snowy summit above a sea of clouds', caption: 'Winter summit above the clouds' },
   ],
 };

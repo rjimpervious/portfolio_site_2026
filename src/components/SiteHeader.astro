@@ -1,0 +1,40 @@
+---
+// Sticky top navigation shared by all pages. Links are absolute so they work from /life too.
+const nav = [
+  ['About', '/#about'],
+  ['Experience', '/#experience'],
+  ['Skills', '/#skills'],
+  ['Life', '/life/'],
+  ['Contact', '/#contact'],
+];
+const path = Astro.url.pathname;
+---
+
+<header class="fixed inset-x-0 top-0 z-50 border-b border-line/60 bg-void/80 backdrop-blur-lg">
+  <nav class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-8" aria-label="Main">
+    <a href="/" class="font-mono text-base font-medium text-neon">
+      rj<span class="text-pink">@</span>lopez<span class="text-muted">:~$</span>
+    </a>
+    <ul class="hidden items-center gap-8 text-[0.95rem] font-medium text-muted md:flex">
+      {nav.map(([label, href]) => (
+        <li>
+          <a
+            href={href}
+            class:list={['transition hover:text-neon', href === '/life/' && path.startsWith('/life') && 'text-pink-soft']}
+            aria-current={href === '/life/' && path.startsWith('/life') ? 'page' : undefined}
+          >{label}</a>
+        </li>
+      ))}
+    </ul>
+    <details class="relative md:hidden">
+      <summary class="cursor-pointer list-none rounded-md border border-line px-3.5 py-2 font-mono text-sm text-neon [&::-webkit-details-marker]:hidden">
+        menu<span class="text-pink">_</span>
+      </summary>
+      <ul class="absolute right-0 mt-2 w-52 rounded-xl border border-line bg-surface p-2 text-base shadow-xl">
+        {nav.map(([label, href]) => (
+          <li><a href={href} class="block rounded-lg px-3 py-2.5 hover:bg-surface-2 hover:text-neon">{label}</a></li>
+        ))}
+      </ul>
+    </details>
+  </nav>
+</header>
