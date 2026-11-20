@@ -1,0 +1,44 @@
+---
+interface Props {
+  company: string;
+  role: string;
+  location: string;
+  period: string;
+  points: string[];
+  tags: string[];
+  current?: boolean;
+  index?: number;
+}
+const { company, role, location, period, points, tags, current = false, index = 0 } = Astro.props;
+---
+
+<li data-reveal style={`--d:${index * 100}`} class="relative pl-8 sm:pl-12">
+  <span
+    class:list={[
+      'absolute top-7 left-[-7px] h-3.5 w-3.5 rounded-full border-2',
+      current ? 'border-neon bg-neon shadow-[0_0_14px_2px_rgb(57_255_136/0.7)]' : 'border-pink bg-void',
+    ]}
+    aria-hidden="true"
+  ></span>
+  <article class:list={['card p-6 sm:p-8', !current && 'card-pink']}>
+    <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+      <h3 class="font-display text-xl font-semibold sm:text-2xl">{role}</h3>
+      <p class="font-mono text-sm text-muted">{period}</p>
+    </div>
+    <p class="mt-1 text-base">
+      <span class:list={[current ? 'text-neon' : 'text-pink-soft', 'font-medium']}>{company}</span>
+      <span class="text-muted"> · {location}</span>
+    </p>
+    <ul class="mt-5 space-y-2 text-[15px] leading-relaxed text-ink/90">
+      {points.map((p) => (
+        <li class="flex gap-3">
+          <span class="mt-[0.6em] h-1 w-2.5 shrink-0 bg-neon/70" aria-hidden="true"></span>
+          <span>{p}</span>
+        </li>
+      ))}
+    </ul>
+    <ul class="mt-6 flex flex-wrap gap-2" aria-label="Technologies">
+      {tags.map((t) => <li class="chip">{t}</li>)}
+    </ul>
+  </article>
+</li>

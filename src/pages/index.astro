@@ -1,0 +1,181 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Section from '../components/Section.astro';
+import NeonRidge from '../components/NeonRidge.astro';
+import TimelineItem from '../components/TimelineItem.astro';
+import PhotoCard from '../components/PhotoCard.astro';
+import Icon from '../components/Icon.astro';
+import headshot from '../assets/photos/headshot.webp';
+import { profile, experience, education, skills, outside } from '../data/profile';
+
+const nav = [
+  ['About', '#about'],
+  ['Experience', '#experience'],
+  ['Skills', '#skills'],
+  ['Outside work', '#outside'],
+  ['Contact', '#contact'],
+];
+const year = new Date().getFullYear();
+---
+
+<Base>
+  <!-- ============ NAV ============ -->
+  <header class="fixed inset-x-0 top-0 z-50 border-b border-line/60 bg-void/75 backdrop-blur-lg">
+    <nav class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-8" aria-label="Main">
+      <a href="#top" class="font-mono text-sm font-medium text-neon">
+        rj<span class="text-pink">@</span>lopez<span class="text-muted">:~$</span>
+      </a>
+      <ul class="hidden items-center gap-7 text-sm text-muted md:flex">
+        {nav.map(([label, href]) => (
+          <li><a href={href} class="transition hover:text-neon">{label}</a></li>
+        ))}
+      </ul>
+      <details class="group relative md:hidden">
+        <summary class="cursor-pointer list-none rounded-md border border-line px-3 py-1.5 font-mono text-xs text-neon [&::-webkit-details-marker]:hidden">
+          menu<span class="text-pink">_</span>
+        </summary>
+        <ul class="absolute right-0 mt-2 w-48 rounded-xl border border-line bg-surface p-2 text-sm shadow-xl">
+          {nav.map(([label, href]) => (
+            <li><a href={href} class="block rounded-lg px-3 py-2 hover:bg-surface-2 hover:text-neon">{label}</a></li>
+          ))}
+        </ul>
+      </details>
+    </nav>
+  </header>
+
+  <main id="top">
+    <!-- ============ HERO ============ -->
+    <section class="relative flex min-h-dvh items-center overflow-hidden px-4 pt-24 pb-20 sm:px-8">
+      <div class="cyber-grid pointer-events-none absolute inset-0" aria-hidden="true"></div>
+      <NeonRidge />
+      <div class="relative mx-auto grid w-full max-w-6xl items-center gap-12 md:grid-cols-[1.25fr_1fr] md:gap-16">
+        <div>
+          <p data-reveal class="cursor font-mono text-sm text-neon">// hello, world. I'm</p>
+          <h1 data-reveal style="--d:100" class="mt-4 font-display text-5xl leading-[1.02] font-bold tracking-tight sm:text-7xl">
+            <span class="glitch" data-text="Rannie John">Rannie John</span><br />
+            <span class="neon-gradient-text">Lopez</span>
+          </h1>
+          <p data-reveal style="--d:200" class="mt-6 font-mono text-base text-pink-soft sm:text-lg">&gt; {profile.role}</p>
+          <p data-reveal style="--d:300" class="mt-4 max-w-xl text-lg leading-relaxed text-ink/85 sm:text-xl">{profile.pitch}</p>
+          <p data-reveal style="--d:350" class="mt-4 flex items-center gap-2 text-sm text-muted">
+            <Icon name="pin" class="h-4 w-4 text-neon" /> {profile.location} · {profile.workAuth}
+          </p>
+          <div data-reveal style="--d:450" class="mt-9 flex flex-wrap gap-3">
+            <a href="#contact" class="btn btn-primary">Get in touch <Icon name="arrow" class="h-4 w-4" /></a>
+            <a href={profile.links.linkedin} target="_blank" rel="noopener" class="btn btn-ghost"><Icon name="linkedin" class="h-4 w-4" /> LinkedIn</a>
+            <a href={profile.links.github} target="_blank" rel="noopener" class="btn btn-ghost"><Icon name="github" class="h-4 w-4" /> GitHub</a>
+          </div>
+        </div>
+
+        <div data-reveal style="--d:250" class="mx-auto w-full max-w-[22rem] md:max-w-sm">
+          <div class="portrait-frame">
+            <Image
+              src={headshot}
+              alt={`Portrait of ${profile.name}`}
+              widths={[360, 560, 800]}
+              sizes="(min-width: 768px) 384px, 88vw"
+              loading="eager"
+              class="aspect-square w-full rounded-[calc(1.75rem-3px)] object-cover"
+            />
+            <span class="corner -top-3 -left-3 border-t-2 border-l-2" aria-hidden="true"></span>
+            <span class="corner -right-3 -bottom-3 border-r-2 border-b-2 !border-pink" aria-hidden="true"></span>
+          </div>
+          <p class="mt-4 text-center font-mono text-xs text-muted">status: <span class="text-neon">open to opportunities</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <Section id="about" label="about" title="Pipelines that run while you sleep.">
+      <div class="grid gap-10 lg:grid-cols-[1.4fr_1fr]">
+        <div data-reveal class="space-y-5 text-lg leading-relaxed text-ink/85">
+          {profile.summary.map((p) => <p>{p}</p>)}
+          <p class="text-base text-muted">
+            <span class="text-neon">Education:</span> {education.degree}, {education.school} ({education.period})
+          </p>
+        </div>
+        <dl class="grid grid-cols-2 gap-4">
+          {profile.facts.map((f, i) => (
+            <div data-reveal style={`--d:${i * 90}`} class:list={['card p-5', i % 2 && 'card-pink']}>
+              <dt class="sr-only">{f.label}</dt>
+              <dd>
+                <span class:list={['block font-display text-3xl font-bold', i % 2 ? 'text-pink-soft text-glow-pink' : 'text-neon text-glow']}>{f.value}</span>
+                <span class="mt-1 block text-sm text-muted">{f.label}</span>
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </Section>
+
+    <!-- ============ EXPERIENCE ============ -->
+    <Section id="experience" label="experience" title="Where I've shipped." accent="pink">
+      <ol class="relative ml-1.5 space-y-8 border-l border-dashed border-line">
+        {experience.map((job, i) => <TimelineItem {...job} current={i === 0} index={i} />)}
+      </ol>
+    </Section>
+
+    <!-- ============ SKILLS ============ -->
+    <Section id="skills" label="stack" title="Tools of the trade.">
+      <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {skills.map((s, i) => (
+          <div data-reveal style={`--d:${i * 70}`} class:list={['card p-6', i % 2 && 'card-pink']}>
+            <h3 class="font-mono text-sm text-pink-soft">{s.group.toLowerCase().replace(/ & /g, '_&_').replace(/ /g, '_')}</h3>
+            <ul class="mt-4 flex flex-wrap gap-2">
+              {s.items.map((item) => <li class="chip">{item}</li>)}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </Section>
+
+    <!-- ============ OUTSIDE WORK ============ -->
+    <Section id="outside" label="outside_work" title="Offline, uphill." accent="pink">
+      <p data-reveal class="max-w-2xl text-lg leading-relaxed text-ink/85">{outside.intro}</p>
+      <div class="mt-10 grid gap-5 md:grid-cols-3">
+        {outside.photos.map((p, i) => <PhotoCard {...p} index={i} />)}
+      </div>
+      <ul class="mt-8 grid gap-4 sm:grid-cols-3">
+        {outside.stats.map((s, i) => (
+          <li data-reveal style={`--d:${i * 90}`} class="card flex items-center gap-4 p-5">
+            <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-line bg-surface-2 text-neon">
+              <Icon name={s.icon as 'mountain' | 'run' | 'clock'} />
+            </span>
+            <span>
+              <span class="block font-display text-xl font-semibold">{s.value}</span>
+              <span class="block text-sm text-muted">{s.label}</span>
+            </span>
+          </li>
+        ))}
+      </ul>
+    </Section>
+
+    <!-- ============ CONTACT ============ -->
+    <Section id="contact" label="contact" title="Let's build something reliable.">
+      <div data-reveal class="card relative overflow-hidden p-8 sm:p-12">
+        <div class="cyber-grid pointer-events-none absolute inset-0 opacity-60" aria-hidden="true"></div>
+        <div class="relative grid items-center gap-8 md:grid-cols-[1.4fr_1fr]">
+          <p class="text-lg leading-relaxed text-ink/85">
+            Open to data platform, data engineering and DevOps roles in Munich, remote, or across the EU.
+            The fastest way to reach me is email.
+          </p>
+          <div class="flex flex-col gap-3">
+            <a href={`mailto:${profile.email}`} class="btn btn-primary justify-center"><Icon name="mail" class="h-4 w-4" /> {profile.email}</a>
+            <div class="grid grid-cols-2 gap-3">
+              <a href={profile.links.linkedin} target="_blank" rel="noopener" class="btn btn-ghost justify-center"><Icon name="linkedin" class="h-4 w-4" /> LinkedIn</a>
+              <a href={profile.links.github} target="_blank" rel="noopener" class="btn btn-ghost justify-center"><Icon name="github" class="h-4 w-4" /> GitHub</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Section>
+  </main>
+
+  <footer class="border-t border-line/60 px-4 py-8 sm:px-8">
+    <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 font-mono text-xs text-muted">
+      <p>© {year} {profile.name}</p>
+      <p>built with <span class="text-neon">astro</span> · hosted on <span class="text-pink-soft">github pages</span></p>
+    </div>
+  </footer>
+</Base>
